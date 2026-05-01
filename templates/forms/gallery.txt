@@ -1,19 +1,31 @@
 # keywords:filename:description
-# order matters: dragon checked before serpent, wolf before dog, etc.
+# order matters: more specific patterns first (dragon before serpent, wolf before dog).
 # everything is lowercased before matching.
-dragon|wyrm|drake|draconic:dragon:coiled, scaled, slow-watching
+dragon|wyrm|drake|draconic:dragon:flying dragon, wings spread, watchful
+phoenix|firebird|reborn|rising:phoenix:wings cresting, rising from ash
+gryphon|griffin|griffon|talons:gryphon:half-cat half-bird, watchful gaze
 mushroom|fungus|fungal|cap|spore|toadstool:mushroom:gilled cap, sparkles, eyes
 fox|vixen|kitsune:fox:perky ears, sly eyes, bushy tail
 cat|kitten|feline|kitty|tabby:cat:small face, whiskers, tail
-wolf|hound|dog|canine|jackal:wolf:long muzzle, sharp gaze, on guard
-owl|owlish:owl:wide round eyes, perched wings
+wolf|jackal|lupine:wolf:long muzzle, on guard
+dog|pup|puppy|hound|canine:dog:little head turned, tail up
+bear|cub|grizzly|ursa:bear:teddy face, paws spread
+horse|stallion|mare|steed|pony:horse:galloping across the field
+bat|nocturnal|chiroptera:bat:winged shape, eyes between wings
+owl|owlish|hoot:owl:wide round eyes, perched wings
 raven|crow|magpie|hawk|eagle|sparrow|falcon:raven:sleek body, beak, folded wings
 bird|wing|feather:raven:sleek body, beak, folded wings
+fairy|fae|sprite|pixie|nymph:fairy:radiant cross-shape, wings unfolded
+ghost|spirit|wraith|shade|phantom|wisp|haunt:ghost:wispy hem, hollow gaze
+alien|extraterrestrial|ufo|martian:alien:saucer drifting, two eyes peering
 stone|rock|boulder|cairn|pebble|granite|slab:stone:weathered, lichen-marked, still
-star|cosmic|celestial|constellation|nebula|moon|sun:star:radiating, bright at center
+tree|forest|sapling|oak|willow|pine|fern|bonsai:tree:bonsai canopy, trunk, roots
+leaf|leaflet|frond|sprig:leaf:single leaf, veined and quiet
+star|cosmic|celestial|constellation|nebula:star:8-pointed star, balanced
+sun|solar|daybreak|dawn|sunrise|daylight:sun:radiating rays from a center
+moon|lunar|crescent|nightlight:moon:cute crescent, dotted with stars
 flame|fire|ember|spark|hearth|candle|cinder:flame:curling tongue, cinder dust
-tree|forest|sapling|oak|willow|pine|fern|leaf|bloom:tree:canopy, trunk, roots
+lighthouse|beacon|tower|guide|harbor:lighthouse:tall tower, light on water
 serpent|snake|asp|cobra|viper:serpent:sinuous coil, watchful eye
 robot|machine|automaton|familiar|construct|golem|bot:robot:boxy, eye-lit, antenna
-ghost|spirit|wraith|shade|phantom|wisp|haunt:ghost:wispy hem, hollow gaze
 crystal|gem|prism|shard:crystal:faceted prism, shimmer
