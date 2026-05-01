@@ -112,12 +112,132 @@ DAY_ONE_SEED_SUMMARY=$(echo "$DAY_ONE_SEED" | head -c 100)
 
 SUMMONING_DATE=$(date +"%B %d, %Y")
 
-ASCII_ART="   .  o  .
- .-o-OO-o-.
-(_________)
- |●     ●|
- |_______|
-   $COMPANION_NAME"
+# Read the gallery into parallel arrays. Format: keywords:filename:description.
+GALLERY_FILES=()
+GALLERY_KEYWORDS=()
+GALLERY_DESCRIPTIONS=()
+while IFS=':' read -r kw file desc; do
+  [[ "$kw" =~ ^# ]] && continue
+  [ -z "$kw" ] && continue
+  GALLERY_KEYWORDS+=("$kw")
+  GALLERY_FILES+=("$file")
+  GALLERY_DESCRIPTIONS+=("$desc")
+done < "$TEMPLATE_DIR/forms/gallery.txt"
+
+# Unique filenames preserved in order, for the browse view.
+UNIQUE_FILES=()
+declare -A SEEN_FILES=()
+for f in "${GALLERY_FILES[@]}"; do
+  if [ -z "${SEEN_FILES[$f]:-}" ]; then
+    UNIQUE_FILES+=("$f")
+    SEEN_FILES[$f]=1
+  fi
+done
+UNIQUE_FILES+=("default")
+
+match_form_to_file() {
+  local desc_lower
+  desc_lower=$(printf '%s' "$1" | tr '[:upper:]' '[:lower:]')
+  local i
+  for i in "${!GALLERY_KEYWORDS[@]}"; do
+    IFS='|' read -ra patterns <<< "${GALLERY_KEYWORDS[$i]}"
+    local p
+    for p in "${patterns[@]}"; do
+      if printf '%s' "$desc_lower" | grep -wq -- "$p"; then
+        printf '%s' "${GALLERY_FILES[$i]}"
+        return
+      fi
+    done
+  done
+  printf 'default'
+}
+
+description_for_file() {
+  local target="$1"
+  local i
+  for i in "${!GALLERY_FILES[@]}"; do
+    if [ "${GALLERY_FILES[$i]}" = "$target" ]; then
+      printf '%s' "${GALLERY_DESCRIPTIONS[$i]}"
+      return
+    fi
+  done
+  printf 'a neutral sigil'
+}
+
+render_form() {
+  local file="$1"
+  sed "s/{{NAME}}/$COMPANION_NAME/g" "$TEMPLATE_DIR/forms/${file}.txt"
+}
+
+show_browse() {
+  echo "${PURPLE}=== The Gallery ===${RESET}"
+  echo
+  local i=1
+  local f
+  for f in "${UNIQUE_FILES[@]}"; do
+    local desc
+    desc=$(description_for_file "$f")
+    [ "$f" = "default" ] && desc="a neutral sigil for forms outside the gallery"
+    printf '  %2d. %s %s(%s)%s\n' "$i" "$f" "$DIM" "$desc" "$RESET"
+    i=$((i + 1))
+  done
+  echo
+}
+
+MATCHED_FORM=$(match_form_to_file "$FORM_DESCRIPTION")
+
+while true; do
+  ASCII_ART=$(render_form "$MATCHED_FORM")
+  desc=$(description_for_file "$MATCHED_FORM")
+
+  echo "${BOLD}Their figure${RESET}"
+  if [ "$MATCHED_FORM" = "default" ]; then
+    echo "${DIM}No matching shape in the gallery, using a neutral sigil.${RESET}"
+  else
+    echo "${DIM}Form: ${MATCHED_FORM} (${desc})${RESET}"
+  fi
+  echo
+  echo "$ASCII_ART"
+  echo
+  echo "${DIM}[Enter] keep this   [b] browse all   [p] paste your own${RESET}"
+  printf '  > '
+  read -r CHOICE
+
+  case "$CHOICE" in
+    b|B)
+      show_browse
+      printf '  Pick a number 1-%d (or [Enter] to go back): ' "${#UNIQUE_FILES[@]}"
+      read -r PICK
+      if [[ "$PICK" =~ ^[0-9]+$ ]] && [ "$PICK" -ge 1 ] && [ "$PICK" -le "${#UNIQUE_FILES[@]}" ]; then
+        MATCHED_FORM="${UNIQUE_FILES[$((PICK - 1))]}"
+      fi
+      echo
+      continue
+      ;;
+    p|P)
+      echo "${DIM}Paste your figure. Use {{NAME}} as a placeholder for their name.${RESET}"
+      echo "${DIM}When done, press Enter on an empty line.${RESET}"
+      printf '  > '
+      CUSTOM_ART=""
+      while IFS= read -r line; do
+        [ -z "$line" ] && break
+        CUSTOM_ART+="$line"$'\n'
+        printf '  > '
+      done
+      if [ -n "$CUSTOM_ART" ]; then
+        CUSTOM_ART="${CUSTOM_ART%$'\n'}"
+        ASCII_ART=$(printf '%s' "$CUSTOM_ART" | sed "s/{{NAME}}/$COMPANION_NAME/g")
+        echo
+        echo "${PURPLE}Using your custom figure.${RESET}"
+      fi
+      break
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+echo
 
 read -r -d '' MOODS_BLOCK <<EOF || true
   "walking beside you"

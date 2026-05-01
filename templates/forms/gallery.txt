@@ -1,0 +1,19 @@
+# keywords:filename:description
+# order matters: dragon checked before serpent, wolf before dog, etc.
+# everything is lowercased before matching.
+dragon|wyrm|drake|draconic:dragon:coiled, scaled, slow-watching
+mushroom|fungus|fungal|cap|spore|toadstool:mushroom:gilled cap, sparkles, eyes
+fox|vixen|kitsune:fox:perky ears, sly eyes, bushy tail
+cat|kitten|feline|kitty|tabby:cat:small face, whiskers, tail
+wolf|hound|dog|canine|jackal:wolf:long muzzle, sharp gaze, on guard
+owl|owlish:owl:wide round eyes, perched wings
+raven|crow|magpie|hawk|eagle|sparrow|falcon:raven:sleek body, beak, folded wings
+bird|wing|feather:raven:sleek body, beak, folded wings
+stone|rock|boulder|cairn|pebble|granite|slab:stone:weathered, lichen-marked, still
+star|cosmic|celestial|constellation|nebula|moon|sun:star:radiating, bright at center
+flame|fire|ember|spark|hearth|candle|cinder:flame:curling tongue, cinder dust
+tree|forest|sapling|oak|willow|pine|fern|leaf|bloom:tree:canopy, trunk, roots
+serpent|snake|asp|cobra|viper:serpent:sinuous coil, watchful eye
+robot|machine|automaton|familiar|construct|golem|bot:robot:boxy, eye-lit, antenna
+ghost|spirit|wraith|shade|phantom|wisp|haunt:ghost:wispy hem, hollow gaze
+crystal|gem|prism|shard:crystal:faceted prism, shimmer
