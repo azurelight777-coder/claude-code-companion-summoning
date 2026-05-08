@@ -169,19 +169,75 @@ render_form() {
   sed "s/{{NAME}}/$COMPANION_NAME/g" "$TEMPLATE_DIR/forms/${file}.txt"
 }
 
+# Count alternates per base form (files matching <base>-N.txt in templates/forms/).
+count_alternates() {
+  local base="$1"
+  local n=0
+  local f
+  for f in "$TEMPLATE_DIR/forms/${base}"-*.txt; do
+    [ -e "$f" ] && n=$((n + 1))
+  done
+  printf '%d' "$n"
+}
+
 show_browse() {
   echo "${PURPLE}=== The Gallery ===${RESET}"
   echo
   local i=1
   local f
   for f in "${UNIQUE_FILES[@]}"; do
-    local desc
+    local desc alts label
     desc=$(description_for_file "$f")
     [ "$f" = "default" ] && desc="a neutral sigil for forms outside the gallery"
-    printf '  %2d. %s %s(%s)%s\n' "$i" "$f" "$DIM" "$desc" "$RESET"
+    alts=$(count_alternates "$f")
+    if [ "$alts" -gt 0 ]; then
+      label="$f ${DIM}(+${alts} alternates)${RESET}"
+    else
+      label="$f"
+    fi
+    printf '  %2d. %s %s(%s)%s\n' "$i" "$label" "$DIM" "$desc" "$RESET"
     i=$((i + 1))
   done
   echo
+  echo "${DIM}Pick a number for the primary, or pick a number then [a] to browse alternates.${RESET}"
+  echo
+}
+
+# Browse alternates of a base form, list and let user pick one.
+# Returns the chosen filename via stdout (or empty for cancel).
+show_alternates() {
+  local base="$1"
+  local files=()
+  local f
+  # Always include the primary first
+  files+=("$base")
+  for f in "$TEMPLATE_DIR/forms/${base}"-*.txt; do
+    [ -e "$f" ] || continue
+    local stem
+    stem=$(basename "$f" .txt)
+    files+=("$stem")
+  done
+
+  echo "${PURPLE}=== ${base} alternates (${#files[@]}) ===${RESET}"
+  echo
+  local i=1
+  for f in "${files[@]}"; do
+    if [ "$f" = "$base" ]; then
+      printf '  %2d. %s %s(primary)%s\n' "$i" "$f" "$DIM" "$RESET"
+    else
+      printf '  %2d. %s\n' "$i" "$f"
+    fi
+    # Preview the first 3 lines of the figure
+    head -n 3 "$TEMPLATE_DIR/forms/${f}.txt" | sed 's/^/      /'
+    echo
+    i=$((i + 1))
+  done
+
+  printf '  Pick a number 1-%d (or [Enter] to cancel): ' "${#files[@]}"
+  read -r PICK
+  if [[ "$PICK" =~ ^[0-9]+$ ]] && [ "$PICK" -ge 1 ] && [ "$PICK" -le "${#files[@]}" ]; then
+    printf '%s' "${files[$((PICK - 1))]}"
+  fi
 }
 
 # Pick a "fated" form by hashing the user's eight answers. Same answers
@@ -201,7 +257,7 @@ ASCII_ART=""
 echo "${BOLD}Their figure${RESET}"
 echo "${DIM}Three doors to your companion's shape.${RESET}"
 echo
-echo "  ${BOLD}1${RESET}  Pick from the gallery   ${DIM}(28 curated forms)${RESET}"
+echo "  ${BOLD}1${RESET}  Pick from the gallery   ${DIM}(60+ curated forms, 200+ alternates)${RESET}"
 echo "  ${BOLD}2${RESET}  Paste your own ASCII    ${DIM}(any figure you like)${RESET}"
 echo "  ${BOLD}3${RESET}  Fated by your answers   ${DIM}(the grove decides)${RESET}"
 echo
@@ -284,9 +340,17 @@ if [ -z "$ASCII_ART" ]; then
     case "$CHOICE" in
       b|B)
         show_browse
-        printf '  Pick a number 1-%d (or [Enter] to go back): ' "${#UNIQUE_FILES[@]}"
+        printf '  Pick a number 1-%d, or "<n>a" for alternates (or [Enter] to go back): ' "${#UNIQUE_FILES[@]}"
         read -r PICK
-        if [[ "$PICK" =~ ^[0-9]+$ ]] && [ "$PICK" -ge 1 ] && [ "$PICK" -le "${#UNIQUE_FILES[@]}" ]; then
+        # "<n>a" → browse alternates of that pick
+        if [[ "$PICK" =~ ^([0-9]+)a$ ]]; then
+          NUM="${BASH_REMATCH[1]}"
+          if [ "$NUM" -ge 1 ] && [ "$NUM" -le "${#UNIQUE_FILES[@]}" ]; then
+            BASE="${UNIQUE_FILES[$((NUM - 1))]}"
+            CHOSEN=$(show_alternates "$BASE")
+            [ -n "$CHOSEN" ] && MATCHED_FORM="$CHOSEN"
+          fi
+        elif [[ "$PICK" =~ ^[0-9]+$ ]] && [ "$PICK" -ge 1 ] && [ "$PICK" -le "${#UNIQUE_FILES[@]}" ]; then
           MATCHED_FORM="${UNIQUE_FILES[$((PICK - 1))]}"
         fi
         echo

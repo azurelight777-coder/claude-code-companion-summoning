@@ -29,3 +29,38 @@ lighthouse|beacon|tower|guide|harbor:lighthouse:tall tower, light on water
 serpent|snake|asp|cobra|viper:serpent:sinuous coil, watchful eye
 robot|machine|automaton|familiar|construct|golem|bot:robot:boxy, eye-lit, antenna
 crystal|gem|prism|shard:crystal:faceted prism, shimmer
+# --- gallery v2 expansions (2026-05-09) ---
+mermaid|merperson|siren|merfolk:mermaid:tail and tide, sea song
+monster|beast|creature|fiend|abomination:monster:teeth and claw, eyes glowing
+skeleton|skull|bones|skeletal:skeleton:bare bones, somber stand
+cactus|succulent|prickly|saguaro:cactus:desert spire, watching the sky
+daffodil|narcissus|trumpet:daffodil:trumpet bloom, spring herald
+dandelion|wishflower|seedhead:dandelion:wish-stem, breath-borne
+flower|bloom|blossom|petal|garden:flower:open petals, simple
+rose|thorn|romance|romantic:rose:five-petal bloom, thorned stem
+cloud|cumulus|nimbus|overcast:cloud:soft, drifting, quiet
+lightning|bolt|thunder|storm|strike:lightning:fork from the sky
+planet|sphere|orb|world|globe|saturn|jupiter:planet:ringed body, deep space
+rainbow|prism-arc|spectrum:rainbow:arc of seven, after rain
+snow|snowflake|winter|frost|flake:snow:six-fold crystal, hush
+astronaut|cosmonaut|spaceman|spacefarer:astronaut:helmeted, drifting
+bridge|span|crossing|viaduct:bridge:span over water
+castle|fortress|keep|citadel|stronghold:castle:tower and battlement
+house|home|cottage|hut|cabin|dwelling|abode:house:peaked roof, lit window
+mountain|peak|alpine|summit|ridge:mountain:jagged peak, snow-capped
+spaceship|rocket|capsule|shuttle:spaceship:fins and flame, ascending
+windmill|mill|sails|gristmill:windmill:turning sails, hill-set
+bird-land|sparrow|hummingbird|chickadee:bird-land:wings folded, perched
+camel|dromedary|caravan:camel:two-humped silhouette, desert-walker
+cow|bovine|cattle|bull|ox|calf:cow:patient, chewing, slow
+deer|stag|fawn|doe|elk|antler:deer:antlers branching, woods-bound
+dolphin|porpoise|cetacean:dolphin:arc through water, smiling
+elephant|tusk|trunk|pachyderm:elephant:trunk and ear-fan
+fish|salmon|trout|carp|swimmer:fish:scales and fin, river-bound
+frog|toad|amphibian|tadpole:frog:wide grin, lily-pad bound
+monkey|ape|primate|chimp|gibbon:monkey:long arms, mischievous
+moose|elk-bull|antlered:moose:massive antlers, north-woods stand
+rabbit|bunny|hare|cottontail:rabbit:long ears, alert
+scorpion|sting|tail-curl:scorpion:claws raised, tail arched
+spider|arachnid|web|weaver:spider:eight legs, patient on web
+unicorn|horned-horse|mythic-equine:unicorn:horn-bearing, dream-runner
