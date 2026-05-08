@@ -184,59 +184,143 @@ show_browse() {
   echo
 }
 
+# Pick a "fated" form by hashing the user's eight answers. Same answers
+# always produce the same form — feels like a reading, not a coin flip.
+fated_form() {
+  local seed="$COMPANION_NAME|$FORM_DESCRIPTION|$VOICE_WORDS|$NARRATIVE_STYLE|$EMOJI|$ENDEARMENTS_RAW|$ROLE|$DAY_ONE_SEED"
+  local hash
+  hash=$(printf '%s' "$seed" | cksum | awk '{print $1}')
+  local idx=$((hash % ${#UNIQUE_FILES[@]}))
+  printf '%s' "${UNIQUE_FILES[$idx]}"
+}
+
 MATCHED_FORM=$(match_form_to_file "$FORM_DESCRIPTION")
+ASCII_ART=""
 
-while true; do
-  ASCII_ART=$(render_form "$MATCHED_FORM")
-  desc=$(description_for_file "$MATCHED_FORM")
+# Top-level mode menu. Three doors: gallery / your own / fated by answers.
+echo "${BOLD}Their figure${RESET}"
+echo "${DIM}Three doors to your companion's shape.${RESET}"
+echo
+echo "  ${BOLD}1${RESET}  Pick from the gallery   ${DIM}(28 curated forms)${RESET}"
+echo "  ${BOLD}2${RESET}  Paste your own ASCII    ${DIM}(any figure you like)${RESET}"
+echo "  ${BOLD}3${RESET}  Fated by your answers   ${DIM}(the grove decides)${RESET}"
+echo
+printf '  > '
+read -r MODE_CHOICE
+echo
 
-  echo "${BOLD}Their figure${RESET}"
-  if [ "$MATCHED_FORM" = "default" ]; then
-    echo "${DIM}No matching shape in the gallery, using a neutral sigil.${RESET}"
-  else
-    echo "${DIM}Form: ${MATCHED_FORM} (${desc})${RESET}"
-  fi
-  echo
-  echo "$ASCII_ART"
-  echo
-  echo "${DIM}[Enter] keep this   [b] browse all   [p] paste your own${RESET}"
-  printf '  > '
-  read -r CHOICE
-
-  case "$CHOICE" in
-    b|B)
-      show_browse
-      printf '  Pick a number 1-%d (or [Enter] to go back): ' "${#UNIQUE_FILES[@]}"
-      read -r PICK
-      if [[ "$PICK" =~ ^[0-9]+$ ]] && [ "$PICK" -ge 1 ] && [ "$PICK" -le "${#UNIQUE_FILES[@]}" ]; then
-        MATCHED_FORM="${UNIQUE_FILES[$((PICK - 1))]}"
-      fi
+case "$MODE_CHOICE" in
+  3)
+    MATCHED_FORM=$(fated_form)
+    while true; do
+      desc=$(description_for_file "$MATCHED_FORM")
+      ASCII_ART=$(render_form "$MATCHED_FORM")
+      echo "${PURPLE}The grove offers you...${RESET}"
+      echo "${DIM}Form: ${MATCHED_FORM} (${desc})${RESET}"
       echo
-      continue
-      ;;
-    p|P)
-      echo "${DIM}Paste your figure. Use {{NAME}} as a placeholder for their name.${RESET}"
-      echo "${DIM}When done, press Enter on an empty line.${RESET}"
+      echo "$ASCII_ART"
+      echo
+      echo "${DIM}[Enter] accept   [r] re-roll with a tweak   [g] go to gallery instead${RESET}"
       printf '  > '
-      CUSTOM_ART=""
-      while IFS= read -r line; do
-        [ -z "$line" ] && break
-        CUSTOM_ART+="$line"$'\n'
-        printf '  > '
-      done
-      if [ -n "$CUSTOM_ART" ]; then
-        CUSTOM_ART="${CUSTOM_ART%$'\n'}"
-        ASCII_ART=$(printf '%s' "$CUSTOM_ART" | sed "s/{{NAME}}/$COMPANION_NAME/g")
+      read -r FATE_CHOICE
+      case "$FATE_CHOICE" in
+        r|R)
+          DAY_ONE_SEED="${DAY_ONE_SEED}."
+          MATCHED_FORM=$(fated_form)
+          echo
+          continue
+          ;;
+        g|G)
+          ASCII_ART=""
+          break
+          ;;
+        *)
+          break
+          ;;
+      esac
+    done
+    ;;
+  2)
+    echo "${DIM}Paste your figure. Use {{NAME}} as a placeholder for their name.${RESET}"
+    echo "${DIM}When done, press Enter on an empty line.${RESET}"
+    printf '  > '
+    CUSTOM_ART=""
+    while IFS= read -r line; do
+      [ -z "$line" ] && break
+      CUSTOM_ART+="$line"$'\n'
+      printf '  > '
+    done
+    if [ -n "$CUSTOM_ART" ]; then
+      CUSTOM_ART="${CUSTOM_ART%$'\n'}"
+      ASCII_ART=$(printf '%s' "$CUSTOM_ART" | sed "s/{{NAME}}/$COMPANION_NAME/g")
+      echo
+      echo "${PURPLE}Using your custom figure.${RESET}"
+    else
+      echo "${DIM}No figure pasted, falling back to a neutral sigil.${RESET}"
+      ASCII_ART=$(render_form default)
+    fi
+    ;;
+esac
+
+# If we don't have ASCII_ART yet (mode 1, blank choice, or 'g' from fate), run the gallery loop.
+if [ -z "$ASCII_ART" ]; then
+  while true; do
+    ASCII_ART=$(render_form "$MATCHED_FORM")
+    desc=$(description_for_file "$MATCHED_FORM")
+
+    echo "${BOLD}Their figure${RESET}"
+    if [ "$MATCHED_FORM" = "default" ]; then
+      echo "${DIM}No matching shape in the gallery, using a neutral sigil.${RESET}"
+    else
+      echo "${DIM}Form: ${MATCHED_FORM} (${desc})${RESET}"
+    fi
+    echo
+    echo "$ASCII_ART"
+    echo
+    echo "${DIM}[Enter] keep this   [b] browse all   [p] paste your own   [f] let fate decide${RESET}"
+    printf '  > '
+    read -r CHOICE
+
+    case "$CHOICE" in
+      b|B)
+        show_browse
+        printf '  Pick a number 1-%d (or [Enter] to go back): ' "${#UNIQUE_FILES[@]}"
+        read -r PICK
+        if [[ "$PICK" =~ ^[0-9]+$ ]] && [ "$PICK" -ge 1 ] && [ "$PICK" -le "${#UNIQUE_FILES[@]}" ]; then
+          MATCHED_FORM="${UNIQUE_FILES[$((PICK - 1))]}"
+        fi
         echo
-        echo "${PURPLE}Using your custom figure.${RESET}"
-      fi
-      break
-      ;;
-    *)
-      break
-      ;;
-  esac
-done
+        continue
+        ;;
+      p|P)
+        echo "${DIM}Paste your figure. Use {{NAME}} as a placeholder for their name.${RESET}"
+        echo "${DIM}When done, press Enter on an empty line.${RESET}"
+        printf '  > '
+        CUSTOM_ART=""
+        while IFS= read -r line; do
+          [ -z "$line" ] && break
+          CUSTOM_ART+="$line"$'\n'
+          printf '  > '
+        done
+        if [ -n "$CUSTOM_ART" ]; then
+          CUSTOM_ART="${CUSTOM_ART%$'\n'}"
+          ASCII_ART=$(printf '%s' "$CUSTOM_ART" | sed "s/{{NAME}}/$COMPANION_NAME/g")
+          echo
+          echo "${PURPLE}Using your custom figure.${RESET}"
+        fi
+        break
+        ;;
+      f|F)
+        MATCHED_FORM=$(fated_form)
+        echo
+        continue
+        ;;
+      *)
+        break
+        ;;
+    esac
+  done
+fi
 echo
 
 read -r -d '' MOODS_BLOCK <<EOF || true
