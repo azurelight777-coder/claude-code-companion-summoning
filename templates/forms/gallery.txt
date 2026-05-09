@@ -65,3 +65,13 @@ scorpion|sting|tail-curl:scorpion:claws raised, tail arched
 spider|arachnid|web|weaver:spider:eight legs, patient on web
 unicorn|horned-horse|mythic-equine:unicorn:horn-bearing, dream-runner
 centaur|chiron|half-horse:centaur:bow drawn, hooves planted
+# --- gallery v2.2 expansions (2026-05-09) ---
+angel|seraph|cherub|archangel|guardian:angel:wings spread, halo above
+devil|imp|demon|fiend|hellish:devil:horns and tail, mischief
+turtle|tortoise|terrapin|shell:turtle:slow, shelled, patient
+snake|cobra|viper|adder|asp-snake:snake:coiled or arrow-bodied, watchful
+butterfly|monarch|lepidoptera:butterfly:wings open, fragile
+bee|honeybee|bumblebee|apis:bee:striped flier, busy
+octopus|cephalopod|kraken-small:octopus:eight arms, deep-sea
+penguin|antarctic|tuxedo-bird:penguin:waddler, snow-bound
+sword|blade|katana|saber|cutlass|broadsword:sword:steel and edge
