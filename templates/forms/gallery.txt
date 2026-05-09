@@ -75,3 +75,14 @@ bee|honeybee|bumblebee|apis:bee:striped flier, busy
 octopus|cephalopod|kraken-small:octopus:eight arms, deep-sea
 penguin|antarctic|tuxedo-bird:penguin:waddler, snow-bound
 sword|blade|katana|saber|cutlass|broadsword:sword:steel and edge
+doll|figurine|toy|effigy:doll:button-eyed, watching
+grim|reaper|grim-reaper|death|scythe-bearer:grim:hooded, scythe in hand
+minotaur|maze-bull|labyrinth-beast:minotaur:bull-headed, axe-bearing
+harpy|harpie|winged-woman:harpy:taloned, screech-bringer
+buddha|buddhism|enlightenment|bodhi|monk-buddhist:buddha:meditation, lotus pose
+saint|saintly|holy-figure|martyr:saint:halo, robed
+beaver|dam-builder|wood-worker:beaver:flat tail, busy
+rhino|rhinoceros|rhinoceri|horn-bearer:rhino:two-horned, armored
+aardvark|antbear|orycteropus:aardvark:long-snouted, ant-eater
+waterbird|swan|duck|goose|pelican|stork:waterbird:long-necked, water-dwelling
+marsupial|kangaroo|koala|wallaby|opossum:marsupial:pouch-bearing, hopping or clinging
