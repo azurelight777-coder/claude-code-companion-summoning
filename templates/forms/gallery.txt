@@ -64,3 +64,4 @@ rabbit|bunny|hare|cottontail:rabbit:long ears, alert
 scorpion|sting|tail-curl:scorpion:claws raised, tail arched
 spider|arachnid|web|weaver:spider:eight legs, patient on web
 unicorn|horned-horse|mythic-equine:unicorn:horn-bearing, dream-runner
+centaur|chiron|half-horse:centaur:bow drawn, hooves planted
