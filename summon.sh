@@ -242,10 +242,61 @@ show_alternates() {
   fi
 }
 
-# Pick a "fated" form by hashing the user's eight answers. Same answers
-# always produce the same form — feels like a reading, not a coin flip.
+# Pick a "fated" form. Two-stage:
+#   1. Score each form by counting how many of its archetype tags
+#      (templates/forms/archetypes.txt) appear in the user's free-text
+#      answers. Highest-scoring form wins.
+#   2. If multiple forms tie (or nothing scores), break the tie with
+#      a cksum hash of the eight answers. Same answers always produce
+#      the same form — a reading, not a coin flip.
 fated_form() {
   local seed="$COMPANION_NAME|$FORM_DESCRIPTION|$VOICE_WORDS|$NARRATIVE_STYLE|$EMOJI|$ENDEARMENTS_RAW|$ROLE|$DAY_ONE_SEED"
+  local archetypes_file="$TEMPLATE_DIR/forms/archetypes.txt"
+
+  if [ -f "$archetypes_file" ]; then
+    local picked
+    picked=$(SEED="$seed" \
+             USER_TEXT="$FORM_DESCRIPTION $VOICE_WORDS $NARRATIVE_STYLE $ROLE $DAY_ONE_SEED" \
+             ARCHETYPES="$archetypes_file" \
+             FORMS="${UNIQUE_FILES[*]}" \
+             python3 - <<'PY'
+import os, re, zlib
+
+user = os.environ["USER_TEXT"].lower()
+words = set(re.findall(r"[a-z]+", user))
+forms_avail = set(os.environ["FORMS"].split())
+
+scores = {}
+with open(os.environ["ARCHETYPES"]) as f:
+    for line in f:
+        line = line.strip()
+        if not line or line.startswith("#") or ":" not in line:
+            continue
+        form, tags_str = line.split(":", 1)
+        form = form.strip()
+        if form not in forms_avail:
+            continue
+        tags = [t.strip().lower() for t in tags_str.split(",") if t.strip()]
+        score = sum(1 for t in tags if t in words)
+        if score > 0:
+            scores[form] = score
+
+if not scores:
+    print("")
+else:
+    top = max(scores.values())
+    winners = sorted([f for f, s in scores.items() if s == top])
+    seed = os.environ["SEED"]
+    h = zlib.crc32(seed.encode())
+    print(winners[h % len(winners)])
+PY
+)
+    if [ -n "$picked" ]; then
+      printf '%s' "$picked"
+      return
+    fi
+  fi
+
   local hash
   hash=$(printf '%s' "$seed" | cksum | awk '{print $1}')
   local idx=$((hash % ${#UNIQUE_FILES[@]}))

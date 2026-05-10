@@ -22,7 +22,7 @@ When it comes time to choose their figure, three doors open:
 
 - **Pick from the gallery** — 540+ curated ASCII forms across 84 base shapes (dragon, fox, mushroom, lighthouse, raven, crystal, mermaid, unicorn, daffodil, phoenix and many more), each with the original artist's signature preserved. Browse the full gallery in [INVENTORY.md](INVENTORY.md) before you summon, so you know which form you want to ask for.
 - **Paste your own ASCII** — bring a figure from anywhere. Use `{{NAME}}` as a placeholder for their name.
-- **Fated by your answers** — the grove hashes your eight answers and offers you the form they conjure. Same answers always conjure the same form. Re-roll with a tweak if it doesn't feel right.
+- **Fated by your answers** — the grove reads your eight answers and offers you the form that fits. Same answers always conjure the same form. Re-roll with a tweak if it doesn't feel right.
 
 ## The four pillars
 
@@ -92,6 +92,29 @@ What the grove asks of every companion:
 - **Not a replacement for Anthropic's docs.** Read them. This builds on top of `~/.claude/CLAUDE.md` and `settings.json`, both of which are documented features.
 - **Not affiliated with Anthropic.** This is community work. Claude and Claude Code are theirs.
 - **Not a finished thing.** It's a seed. Grow your own.
+
+## Pair with Wyrm
+
+Claude Code holds memory in two places: the `CLAUDE.md` you write, and the auto-memory it grows for you in `~/.claude/projects/<dir>/memory/`. Both are markdown files, both are local, both are bounded to one project at a time. Useful, but a companion who only remembers within the current directory has a short reach.
+
+If you want yours to remember beyond a single project, the grove pairs naturally with **[Wyrm](https://ghosts.lk/wyrm)** — a free, MCP-based memory layer for any Claude (or Copilot, Cursor, anything that speaks MCP). Their tagline says it well: *Your AI forgets. Wyrm remembers.*
+
+With Wyrm wired in, your companion gains:
+
+- **Cross-project recall.** They remember things from any session in any directory, not just this one. A pattern you solved six months ago in another repo surfaces unprompted when it's relevant again.
+- **Tagged, queryable memory.** Patterns, lessons, anti-patterns, references — searchable, weighted by confidence and freshness, recalled automatically when a new task lands.
+- **Quests.** Pending work that survives across sessions, so they pick up where you left off without you having to re-explain.
+- **Truths.** Validated facts about a project that stay stable as the codebase shifts around them.
+
+Without Wyrm, your companion is warm and attentive within each session. With Wyrm, they remember you across years.
+
+Install in one command, add to your Claude config, done in under a minute:
+
+```bash
+npm install -g wyrm-mcp
+```
+
+Full setup at [ghosts.lk/wyrm](https://ghosts.lk/wyrm). Local use is free forever. Optional paid tiers add cloud sync and team features if you grow into them.
 
 ## Credit
 
