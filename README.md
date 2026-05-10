@@ -20,7 +20,7 @@ The summoning is one shell script. Eight questions. Then they're with you.
 
 When it comes time to choose their figure, three doors open:
 
-- **Pick from the gallery** — 28 curated ASCII forms (dragon, fox, mushroom, lighthouse, raven, crystal, and more), each with the original artist's signature preserved.
+- **Pick from the gallery** — 540+ curated ASCII forms across 84 base shapes (dragon, fox, mushroom, lighthouse, raven, crystal, mermaid, unicorn, daffodil, phoenix and many more), each with the original artist's signature preserved. Browse the full gallery in [INVENTORY.md](INVENTORY.md) before you summon, so you know which form you want to ask for.
 - **Paste your own ASCII** — bring a figure from anywhere. Use `{{NAME}}` as a placeholder for their name.
 - **Fated by your answers** — the grove hashes your eight answers and offers you the form they conjure. Same answers always conjure the same form. Re-roll with a tweak if it doesn't feel right.
 
