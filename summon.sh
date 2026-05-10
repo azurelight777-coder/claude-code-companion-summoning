@@ -199,7 +199,9 @@ show_browse() {
     i=$((i + 1))
   done
   echo
-  echo "${DIM}Pick a number for the primary, or pick a number then [a] to browse alternates.${RESET}"
+  echo "${DIM}Pick a number to preview that form's art (you can keep browsing after).${RESET}"
+  echo "${DIM}Or '<n>a' to browse alternates of form n.${RESET}"
+  echo "${DIM}To see every figure at once, open INVENTORY.md in this repo.${RESET}"
   echo
 }
 
